@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -8,7 +9,8 @@ from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'   ### tell alchemy where to find data.db
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'   ### tell alchemy where to find data.db
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')   ### if using heroku's db, note os is heroku's. if no postgres, use default sqlite locally
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False   ### not use flasksqlalchemy to track(too much resource), use sqlalchemy to track
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'jose'
@@ -22,6 +24,7 @@ api = Api(app)
 
 
 ### no manual run 'create_table.db' before run app.py
+### comment this if deploying to heroku since is using run.py to deploy both app.py & db.py
 #@app.before_first_request
 #def create_tables():
 #    db.create_all()
