@@ -22,9 +22,9 @@ api = Api(app)
 
 
 ### no manual run 'create_table.db' before run app.py
-@app.before_first_request
-def create_tables():
-    db.create_all()
+#@app.before_first_request
+#def create_tables():
+#    db.create_all()
 
 
 jwt = JWT(app, authenticate, identity)  # /auth
